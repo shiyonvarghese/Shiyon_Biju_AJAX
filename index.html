@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ajax Assignment</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/grid.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <style>
+      /* Center the spinner */
+      #loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999; /* Ensure it's on top of everything */
+      }
+
+      #loading-indicator {
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+
+      /* Spinning animation */
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Hidden state for loader */
+      #loading-container.hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Spinner -->
+    <div id="loading-container">
+      <svg
+        id="loading-indicator"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 200 200"
+      >
+        <circle
+          fill="none"
+          stroke-opacity="1"
+          stroke="#FF4A06"
+          stroke-width=".5"
+          cx="100"
+          cy="100"
+          r="0"
+        >
+          <animate
+            attributeName="r"
+            calcMode="spline"
+            dur="2"
+            values="1;80"
+            keyTimes="0;1"
+            keySplines="0 .2 .5 1"
+            repeatCount="indefinite"
+          ></animate>
+          <animate
+            attributeName="stroke-width"
+            calcMode="spline"
+            dur="2"
+            values="0;25"
+            keyTimes="0;1"
+            keySplines="0 .2 .5 1"
+            repeatCount="indefinite"
+          ></animate>
+          <animate
+            attributeName="stroke-opacity"
+            calcMode="spline"
+            dur="2"
+            values="1;0"
+            keyTimes="0;1"
+            keySplines="0 .2 .5 1"
+            repeatCount="indefinite"
+          ></animate>
+        </circle>
+      </svg>
+    </div>
+
+    <!-- Page Content -->
+<div class="grid-con">
+    <div class="col-span-full">
+      <model-viewer
+        id="model"
+        src="model/earbuds.gltf"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        ios-src="model/earbuds.usdz"
+        camera-controls
+        poster="images/poster.webp"
+        shadow-intensity="1"
+        environment-image="images/aircraft_workshop_01_1k.hdr"
+        exposure="1.7"
+        camera-orbit="52.34deg 88.29deg 874.8m"
+        field-of-view="30deg"
+      >
+        <button
+          class="Hotspot"
+          slot="hotspot-1"
+          data-position="22.11m 76.42m 92.72m"
+          data-normal="0m 0m 1m"
+          data-visibility-attribute="visible"
+        >
+          <div class="HotspotAnnotation" id="hotspot-1"></div>
+        </button>
+  
+        <button
+          class="Hotspot"
+          slot="hotspot-2"
+          data-position="39.77m 35.16m -60.07m"
+          data-normal="0.99m -0.05m 0.13m"
+          data-visibility-attribute="visible"
+        >
+          <div class="HotspotAnnotation" id="hotspot-2"></div>
+        </button>
+  
+        <button
+          class="Hotspot"
+          slot="hotspot-3"
+          data-position="2.45m 10.89m -85.35m"
+          data-normal="-0.09m 0.73m -0.68m"
+          data-visibility-attribute="visible"
+        >
+          <div class="HotspotAnnotation" id="hotspot-3"></div>
+        </button>
+  
+        <button
+          class="Hotspot"
+          slot="hotspot-4"
+          data-position="8.21m -74.79m 11.90m"
+          data-normal="0.02m -0.18m -0.98m"
+          data-visibility-attribute="visible"
+        >
+          <div class="HotspotAnnotation" id="hotspot-4"></div>
+        </button>
+        <button slot="ar-button" id="ar-button">View in your space</button>
+        <div id="ar-prompt">
+          <img src="images/ar_hand_prompt.png" />
+        </div>
+      </model-viewer>
+    </div>
+    <div class="col-span-full">
+      <h2>Materials</h2>
+      <ul id="material-list"></ul>
+      <template id="material-template">
+        <li>
+          <h3 class="material-heading"></h3>
+          <p class="material-description"></p>
+          <img />
+        </li>
+      </template>
+    </div>
+  </div>
+  
+    <!-- Loaders -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"
+    ></script>
+    <script src="js/main.js"></script>
+    <script>
+      // Show spinner until content is loaded
+      window.addEventListener("load", () => {
+        const loadingContainer = document.getElementById("loading-container");
+        const modelViewer = document.querySelector("model-viewer");
+
+        modelViewer.addEventListener("load", () => {
+          // Hide the spinner when the model is loaded
+          setTimeout(() => {
+            loadingContainer.classList.add("hidden");
+          }, 3000); // Delay hiding for 3 seconds for visibility
+        });
+      });
+    </script>
+  </body>
+</html>
